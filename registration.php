@@ -1,7 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<body>
 <style>
     body {
-        font-family: Arial;
+        font-family: "Arial Black";
     }
 
     input[type=text], select {
@@ -16,7 +18,7 @@
 
     input[type=submit] {
         width: 100%;
-        background-color: #04AA6D;
+        background-color: #af0000;
         color: white;
         padding: 14px 20px;
         margin: 8px 0;
@@ -26,7 +28,7 @@
     }
 
     input[type=submit]:hover {
-        background-color: #45a049;
+        background-color: #540000;
     }
 
     div.container {
@@ -35,55 +37,56 @@
         padding: 20px;
     }
 </style>
-<body>
-
-
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-    Name: <label></label>
-     <input type="text" name="firstName">
-    Last Name: <label></label>
-    <input type="text" name="lastName">
-    email: <label></label>
-    <input type="text" name="email">
-    region: <label></label>
-    <input type="text" name="region">
-    <label for="region">Choose a region:</label>
-    <select name="cars" id="cars">
-        <option value="Noord-holland">Noord-Holland</option>
-        <option value="Zuid-Holland">Zuid-Holland</option>
-        <option value="Zeeland">Zeeland</option>
-        <option value="Noord-Braband">Noord-Braband</option>
-    industry: <label></label>
-    <input type="text" name="industry">
-    jopPosition: <label></label>
-    <input type="text" name="jobPosition">
-    desiresalary: <label></label>
-    <input type="text" name="desiredSalary">
-    <input type="submit">
+<form
+        method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+    Name: <label><label>
+            <input type="text" name="firstName">
+            Last Name: <label></label>
+            <input type="text" name="lastName">
+            Email: <label></label>
+            <input type="text" name="email">
+            <label for="region">Region</label>
+            <select id="region" name="region">
+                <option value="Friesland">Friesland</option>
+                <option value="Gelderland">Gelderland</option>
+                <option value="NoordHolland">Noord-Holland</option>
+                <option value="Zeeland">Zeeland</option>
+                <option value="Brabant">Brabant</option>
+                <option value="ZuidHolland">Zuid-Holland</option>
+                <option value="Noord-Brabant">Noord-Brabant</option>
+                <option value="Drenthe">Drenthe</option>
+                <option value="Overijssel">Overijssel</option>
+                <option value="Flevoland">Flevoland</option>
+                <option value="Groningen">Groingen</option>
+                <option value="Utrecht">Utrecht</option>
+            </select>
+            Industry: <label></label>
+            <input type="text" name="industry">
+            Job Position: <label></label>
+            <input type="text" name="jobPosition">
+            Desired Salary: <label></label>
+            <input type="text" name="desiredSalary">
+            <input type="submit">
 </form>
 
 <?php
+include 'database.php';
+global $conn;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formValid = true;
     $firstname = test_input($_POST["firstName"]);
-    $firstname = test_input($_POST["lastName"]);
-    $firstname = test_input($_POST["email"]);
-    $firstname = test_input($_POST["region"]);
-    $firstname = test_input($_POST["industry"]);
-    $firstname = test_input($_POST["jobPosition"]);
-    $firstname = test_input($_POST["desiredSalary"]);
-    if (empty($firstname))
-        if (empty($lastName))
-            if (empty($email))
-                if (empty($region))
-                    if (empty($industry))
-                        if (empty($jopPosition))
-                            if (empty($desiredSalary)){
-                                $formValid =false;
-                                echo "Invalid Input";
-                            } else {
-                                echo $firstname;
-                            }
+    $lastName  = test_input($_POST["lastName"]);
+    $email = test_input($_POST["email"]);
+    $region = test_input($_POST["region"]);
+    $industry = test_input($_POST["industry"]);
+    $jobPosition = test_input($_POST["jobPosition"]);
+    $desiredSalary = test_input($_POST["desiredSalary"]);
+    if (empty($firstname) || empty($lastName) || empty($email) || empty($region) || empty($industry) || empty($jobPosition || empty($desiredSalary))){
+        $formValid =false;
+        echo "Invalid Input";
+    } else {
+        echo $firstname;
+    }
 }
 function test_input($data) {
     $data = trim($data);
@@ -93,5 +96,4 @@ function test_input($data) {
 ?>
 
 </body>
-</html>
-
+</html
