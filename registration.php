@@ -18,7 +18,7 @@
 
     input[type=submit] {
         width: 100%;
-        background-color: #af0000;
+        background-color: #ffae00;
         color: white;
         padding: 14px 20px;
         margin: 8px 0;
@@ -28,7 +28,7 @@
     }
 
     input[type=submit]:hover {
-        background-color: #540000;
+        background-color: #a27101;
     }
 
     div.container {
@@ -40,13 +40,13 @@
 <form
         method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
     Name: <label><label>
-            <input type="text" name="firstName">
+            <input type="text" name="firstName" required>
             Last Name: <label></label>
-            <input type="text" name="lastName">
+            <input type="text" name="lastName" required>
             Email: <label></label>
-            <input type="text" name="email">
+            <input type="text" name="email" required>
             <label for="region">Region</label>
-            <select id="region" name="region">
+            <select id="region" name="region" required>
                 <option value="Friesland">Friesland</option>
                 <option value="Gelderland">Gelderland</option>
                 <option value="NoordHolland">Noord-Holland</option>
@@ -61,17 +61,21 @@
                 <option value="Utrecht">Utrecht</option>
             </select>
             Industry: <label></label>
-            <input type="text" name="industry">
+            <input type="text" name="industry" required>
             Job Position: <label></label>
-            <input type="text" name="jobPosition">
+            <input type="text" name="jobPosition" required>
             Desired Salary: <label></label>
-            <input type="text" name="desiredSalary">
+            <input type="text" name="desiredSalary" required>
             <input type="submit">
 </form>
 
 <?php
-include 'database.php';
+include_once 'database.php';
 global $conn;
+
+$stm = $conn->prepare("INSERT INTO registrations (firstName, lastName, email, region, industry, jobPosition, desiredSalary) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stm->bind_param("ssssssi", $firstname, $lastName, $email, $region, $industry, $jobPosition, $desiredSalary);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formValid = true;
     $firstname = test_input($_POST["firstName"]);
@@ -83,16 +87,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $desiredSalary = test_input($_POST["desiredSalary"]);
     if (empty($firstname) || empty($lastName) || empty($email) || empty($region) || empty($industry) || empty($jobPosition || empty($desiredSalary))){
         $formValid =false;
-        echo "Invalid Input";
+        echo "Bedankt voor het inzenden!";
     } else {
         echo $firstname;
     }
+    $stm->execute();
+    $stm->close();
 }
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
     return htmlspecialchars($data);
 }
+
 ?>
 
 </body>
